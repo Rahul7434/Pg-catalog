@@ -392,3 +392,108 @@ For more details, visit the [PostgreSQL System Catalogs Documentation](https://w
 | prorows      | float4 | Estimated number of result rows |
 | provariadic  | oid   | Data type of variadic parameter elements |
 | prokind      | char  | Function type (f = normal, p = procedure, a = aggregate, w = window) |
+
+#### pg_publication (Stores logical replication publications)
+
+| Column Name  | Type  | Description |
+|-------------|------|-------------|
+| oid         | oid  | Row identifier |
+| pubname     | name | Name of the publication |
+| pubowner    | oid  | Owner of the publication |
+| puballtables | bool | TRUE if all tables are included |
+| pubinsert   | bool | TRUE if INSERT operations are replicated |
+| pubupdate   | bool | TRUE if UPDATE operations are replicated |
+| pubdelete   | bool | TRUE if DELETE operations are replicated |
+| pubtruncate | bool | TRUE if TRUNCATE operations are replicated |
+
+#### pg_range (Stores metadata for range types)
+
+| Column Name   | Type    | Description |
+|--------------|--------|-------------|
+| rngtypid     | oid    | OID of the range type |
+| rngsubtype   | oid    | OID of the element type (subtype) |
+| rngmultitypid | oid   | OID of the multirange type |
+| rngcollation | oid    | OID of the collation used for comparisons |
+| rngsubopc    | oid    | OID of the operator class used for comparisons |
+| rngcanonical | regproc | Function to convert range value into canonical form |
+| rngsubdiff   | regproc | Function to return the difference between two element values |
+
+#### pg_replication_origin (Stores replication origins)
+
+| Column Name | Type  | Description |
+|------------|------|-------------|
+| roident    | oid  | Unique identifier for the replication origin |
+| roname     | text | User-defined name of the replication origin |
+
+#### pg_rewrite (Stores rewrite rules for tables and views)
+
+| Column Name  | Type  | Description |
+|-------------|------|-------------|
+| oid         | oid  | Row identifier |
+| rulename    | name | Rule name |
+| ev_class    | oid  | Table this rule applies to |
+| ev_type     | char | Event type (1 = SELECT, 2 = UPDATE, 3 = INSERT, 4 = DELETE) |
+| ev_enabled  | char | Rule firing mode (O = origin, D = disabled, R = replica, A = always) |
+| is_instead  | bool | TRUE if the rule is an INSTEAD rule |
+
+#### pg_sequence (Stores metadata about sequences)
+
+| Column Name   | Type  | Description |
+|--------------|------|-------------|
+| seqrelid     | oid  | OID of the sequence |
+| seqtypid     | oid  | Data type of the sequence |
+| seqstart     | int8 | Start value of the sequence |
+| seqincrement | int8 | Increment value of the sequence |
+| seqmax       | int8 | Maximum value of the sequence |
+| seqmin       | int8 | Minimum value of the sequence |
+| seqcache     | int8 | Cache size of the sequence |
+| seqcycle     | bool | Whether the sequence cycles |
+
+#### pg_statistic (Stores statistics for query optimization)
+
+| Column Name  | Type   | Description |
+|-------------|-------|-------------|
+| starelid    | oid   | Table or index the column belongs to |
+| staattnum   | int2  | Column number |
+| stanullfrac | float4 | Fraction of null values |
+| stawidth    | int4  | Average stored width of non-null entries |
+| stadistinct | float4 | Number of distinct non-null values |
+
+#### pg_subscription (Stores logical replication subscriptions)
+
+| Column Name  | Type  | Description |
+|-------------|------|-------------|
+| subname     | name | Name of the subscription |
+| subowner    | oid  | Owner of the subscription |
+| subenabled  | bool | Whether the subscription is enabled |
+| subconninfo | text | Connection string to the upstream database |
+
+#### pg_tablespace (Stores tablespace metadata)
+
+| Column Name | Type  | Description |
+|------------|------|-------------|
+| spcname    | name | Name of the tablespace |
+| spcowner   | oid  | Owner of the tablespace |
+| spcacl     | aclitem[] | Access privileges |
+
+#### pg_trigger (Stores trigger metadata)
+
+| Column Name | Type  | Description |
+|------------|------|-------------|
+| tgname     | name | Trigger name |
+| tgrelid    | oid  | Table the trigger is on |
+| tgfoid     | oid  | Function to be called |
+
+#### pg_type (Stores data type metadata)
+
+| Column Name | Type  | Description |
+|------------|------|-------------|
+| typname    | name | Name of the data type |
+| typlen     | int2 | Length of the data type |
+
+#### pg_user_mapping (Stores user mappings for foreign servers)
+
+| Column Name | Type  | Description |
+|------------|------|-------------|
+| umuser     | oid  | Local role being mapped |
+| umserver   | oid  | Foreign server containing the mapping |
