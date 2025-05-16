@@ -181,4 +181,214 @@ For more details, visit the [PostgreSQL System Catalogs Documentation](https://w
 | reltuples    | float4| Estimated number of live rows in the table |
 | reltoastrelid| oid   | OID of the TOAST table associated with this table (zero if none) |
 
+#### pg_collation (Describes available collations)
 
+| Column Name   | Description |
+|--------------|-------------|
+| collname     | Collation name (unique per namespace and encoding) |
+| collprovider | Provider of the collation (d = database default, b = builtin, c = libc, i = ICU) |
+| collencoding | Encoding in which the collation is applicable |
+| collcollate  | LC_COLLATE for this collation object |
+
+#### pg_constraint (Stores constraints on tables and domains)
+
+| Column Name    | Description |
+|--------------|-------------|
+| conname      | Constraint name |
+| contype      | Constraint type (c = check, f = foreign key, p = primary key, u = unique, x = exclusion) |
+| condeferrable | Whether the constraint is deferrable |
+| convalidated  | Whether the constraint has been validated |
+
+#### pg_conversion (Describes encoding conversion functions)
+
+| Column Name    | Description |
+|--------------|-------------|
+| conname      | Conversion name |
+| conforencoding | Source encoding ID |
+| contoencoding  | Destination encoding ID |
+| conproc       | Conversion function |
+
+#### pg_database (Stores information about available databases)
+
+| Column Name  | Description |
+|-------------|-------------|
+| datname     | Database name |
+| datdba      | Owner of the database |
+| encoding    | Character encoding for the database |
+| datcollate  | LC_COLLATE for the database |
+
+#### pg_db_role_setting (Records default values for runtime configuration variables)
+
+| Column Name  | Description |
+|-------------|-------------|
+| setdatabase | OID of the database the setting applies to |
+| setrole     | OID of the role the setting applies to |
+| setconfig   | Defaults for runtime configuration variables |
+
+#### pg_default_acl (Stores initial privileges for newly created objects)
+
+| Column Name      | Type     | Description |
+|-----------------|---------|-------------|
+| oid            | oid     | Row identifier |
+| defaclrole     | oid     | Role associated with this entry (references pg_authid.oid) |
+| defaclnamespace | oid     | Namespace associated with this entry (references pg_namespace.oid) |
+| defaclobjtype  | char    | Type of object (r = relation, S = sequence, f = function, T = type, n = schema) |
+| defaclacl      | aclitem[] | Access privileges assigned on creation |
+
+#### pg_depend (Tracks dependencies between database objects)
+
+| Column Name   | Type  | Description |
+|--------------|------|-------------|
+| classid      | oid  | OID of the system catalog containing the dependent object (references pg_class.oid) |
+| objid        | oid  | OID of the specific dependent object |
+| objsubid     | int4 | Column number if the object is a table column, otherwise zero |
+| refclassid   | oid  | OID of the system catalog containing the referenced object (references pg_class.oid) |
+| refobjid     | oid  | OID of the specific referenced object |
+| refobjsubid  | int4 | Column number if the referenced object is a table column, otherwise zero |
+| deptype      | char | Dependency type (n = normal, a = auto, i = internal) |
+
+#### pg_description (Stores optional descriptions for database objects)
+
+| Column Name  | Type  | Description |
+|-------------|------|-------------|
+| objoid      | oid  | OID of the object being described |
+| classoid    | oid  | OID of the system catalog containing the object (references pg_class.oid) |
+| objsubid    | int4 | Column number if the object is a table column, otherwise zero |
+| description | text | Text description of the object |
+
+#### pg_enum (Stores values and labels for enum types)
+
+| Column Name   | Type   | Description |
+|--------------|-------|-------------|
+| oid          | oid   | Row identifier |
+| enumtypid    | oid   | OID of the enum type (references pg_type.oid) |
+| enumsortorder | float4 | Sort position of this enum value within its type |
+| enumlabel    | name  | Textual label for this enum value |
+
+#### pg_event_trigger (Stores event triggers)
+
+| Column Name  | Type  | Description |
+|-------------|------|-------------|
+| oid         | oid  | Row identifier |
+| evtname     | name | Unique name of the event trigger |
+| evtevent    | name | Event type for which the trigger fires |
+| evtowner    | oid  | Owner of the event trigger (references pg_authid.oid) |
+| evtfoid     | oid  | Function to be called (references pg_proc.oid) |
+| evtenabled  | char | Trigger firing mode (O = origin, D = disabled, R = replica, A = always) |
+| evttags     | text[] | Command tags for which this trigger fires |
+
+#### pg_extension (Stores metadata about installed extensions)
+
+| Column Name   | Type  | Description |
+|--------------|------|-------------|
+| oid          | oid  | Row identifier |
+| extname      | name | Name of the extension |
+| extowner     | oid  | Owner of the extension (references pg_authid.oid) |
+| extnamespace | oid  | Schema containing the extension's objects (references pg_namespace.oid) |
+| extrelocatable | bool | Whether the extension can be relocated to another schema |
+| extversion   | text | Version name of the extension |
+| extconfig    | oid[] | Array of OIDs for the extension's configuration tables |
+| extcondition | text[] | Array of WHERE-clause filter conditions for the extension's configuration tables |
+
+#### pg_foreign_data_wrapper (Stores foreign-data wrapper definitions)
+
+| Column Name  | Type  | Description |
+|-------------|------|-------------|
+| oid         | oid  | Row identifier |
+| fdwname     | name | Name of the foreign-data wrapper |
+| fdwowner    | oid  | Owner of the foreign-data wrapper (references pg_authid.oid) |
+| fdwhandler  | oid  | Handler function responsible for execution routines (references pg_proc.oid) |
+| fdwvalidator | oid | Validator function for checking options (references pg_proc.oid) |
+| fdwacl      | aclitem[] | Access privileges |
+| fdwoptions  | text[] | Foreign-data wrapper specific options |
+
+#### pg_foreign_server (Stores foreign server definitions)
+
+| Column Name | Type  | Description |
+|------------|------|-------------|
+| oid        | oid  | Row identifier |
+| srvname    | name | Name of the foreign server |
+| srvowner   | oid  | Owner of the foreign server (references pg_authid.oid) |
+| srvfdw     | oid  | OID of the foreign-data wrapper (references pg_foreign_data_wrapper.oid) |
+| srvtype    | text | Type of the server (optional) |
+| srvversion | text | Version of the server (optional) |
+| srvacl     | aclitem[] | Access privileges |
+| srvoptions | text[] | Foreign server specific options |
+
+#### pg_foreign_table (Stores metadata about foreign tables)
+
+| Column Name | Type  | Description |
+|------------|------|-------------|
+| ftrelid    | oid  | OID of the foreign table (references pg_class.oid) |
+| ftserver   | oid  | OID of the foreign server (references pg_foreign_server.oid) |
+| ftoptions  | text[] | Foreign table options |
+
+#### pg_index (Stores metadata about indexes)
+
+| Column Name             | Type   | Description |
+|------------------------|-------|-------------|
+| indexrelid            | oid   | OID of the index (references pg_class.oid) |
+| indrelid              | oid   | OID of the table the index is for (references pg_class.oid) |
+| indnatts              | int2  | Total number of columns in the index |
+| indnkeyatts           | int2  | Number of key columns in the index |
+| indisunique           | bool  | Whether the index is unique |
+| indnullsnotdistinct   | bool  | Whether null values are considered distinct |
+| indisprimary          | bool  | Whether the index represents the primary key |
+| indisexclusion        | bool  | Whether the index supports an exclusion constraint |
+| indimmediate          | bool  | Whether uniqueness is enforced immediately |
+| indisclustered        | bool  | Whether the table was last clustered on this index |
+| indisvalid            | bool  | Whether the index is currently valid for queries |
+
+#### pg_inherits (Stores table inheritance relationships)
+
+| Column Name        | Type  | Description |
+|-------------------|------|-------------|
+| inhrelid        | oid  | OID of the child table or index (references pg_class.oid) |
+| inhparent       | oid  | OID of the parent table or index (references pg_class.oid) |
+| inhseqno        | int4 | Order of inherited columns (starts at 1) |
+| inhdetachpending | bool | TRUE if partition is in the process of being detached |
+
+#### pg_language (Stores procedural languages)
+
+| Column Name  | Type  | Description |
+|-------------|------|-------------|
+| oid         | oid  | Row identifier |
+| lanname     | name | Name of the language |
+| lanowner    | oid  | Owner of the language (references pg_authid.oid) |
+| lanispl     | bool | TRUE for user-defined languages, FALSE for internal languages |
+| lanpltrusted | bool | TRUE if the language is trusted |
+| lanplcallfoid | oid  | Function responsible for executing functions in this language |
+| laninline   | oid  | Function for executing inline anonymous code blocks |
+| lanvalidator | oid  | Function for validating syntax of new functions |
+| lanacl      | aclitem[] | Access privileges |
+
+#### pg_largeobject (Stores large object data)
+
+| Column Name | Type  | Description |
+|------------|------|-------------|
+| loid       | oid  | Identifier of the large object |
+| pageno     | int4 | Page number within the large object |
+| data       | bytea | Actual data stored in the large object |
+
+#### pg_namespace (Stores schema information)
+
+| Column Name | Type  | Description |
+|------------|------|-------------|
+| oid        | oid  | Row identifier |
+| nspname    | name | Name of the schema |
+| nspowner   | oid  | Owner of the schema (references pg_authid.oid) |
+| nspacl     | aclitem[] | Access privileges |
+
+#### pg_proc (Stores function and procedure metadata)
+
+| Column Name    | Type   | Description |
+|--------------|-------|-------------|
+| oid          | oid   | Row identifier |
+| proname      | name  | Name of the function |
+| pronamespace | oid   | Namespace containing the function |
+| proowner     | oid   | Owner of the function |
+| prolang      | oid   | Language used for the function |
+| procost      | float4 | Estimated execution cost |
+| prorows      | float4 | Estimated number of result rows |
+| provariadic  | oid   | Data type of variadic parameter elements |
+| prokind      | char  | Function type (f = normal, p = procedure, a = aggregate, w = window) |
